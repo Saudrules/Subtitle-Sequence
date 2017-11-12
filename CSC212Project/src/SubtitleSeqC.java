@@ -44,7 +44,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 			ListofSubs.remove();
 	}
 
-	@Overrid
+	@Override
 	public void replace(String str1, String str2) {
 		if(this.ListofSubs.empty())
 			return;
