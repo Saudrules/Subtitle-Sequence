@@ -1,8 +1,10 @@
 
 public class SubtitleC implements Subtitle {
+
 	private Time startTime;
 	private Time endTime;
 	private String text;
+
 	
 	@Override
 	public Time getStartTime() {
