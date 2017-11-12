@@ -32,29 +32,16 @@ public class TimeC implements Time {
 		// TODO Auto-generated method stub
 		return MS;
 	}
-
-	@Override
-	public void setHH(int hh) {
-		// TODO Auto-generated method stub
-		
+	public void setHH(int hh){
+		this.HH = hh;
 	}
-
-	@Override
-	public void setMM(int mm) {
-		// TODO Auto-generated method stub
-		
+	public void setMM(int mm){
+		this.MM = mm;
 	}
-
-	@Override
-	public void setSS(int ss) {
-		// TODO Auto-generated method stub
-		
+	public void setMS(int ms){
+		this.MS = ms;
 	}
-
-	@Override
-	public void setMS(int ms) {
-		// TODO Auto-generated method stub
-		
+	public void setSS(int ss){
+		this.SS = ss;
 	}
-
 }
