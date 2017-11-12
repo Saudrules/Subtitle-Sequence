@@ -34,9 +34,27 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public List<Subtitle> getSubtitles(String str) {
-		// TODO Auto-generated method stub
-		return null;
+	    List<Subtitle> tmp = new LinkedList<Subtitle>();
+	    if (ListofSubs.empty()) {
+			return tmp;
+		}
+	    else {
+		    ListofSubs.findFirst();
+
+		    while (!ListofSubs.last()) {
+				if (ListofSubs.retrieve().getText().equalsIgnoreCase(str)) {
+					tmp.insert(ListofSubs.retrieve());
+				}
+				ListofSubs.findNext();
+			}
+		    if (ListofSubs.retrieve().getText().equalsIgnoreCase(str)) {
+				tmp.insert(ListofSubs.retrieve());
+			}
+		}
+	    return tmp;
+		
 	}
+
 
 	@Override
 	public void remove(String str) {
