@@ -20,8 +20,16 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public List<Subtitle> getSubtitles(Time startTime, Time endTime) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Subtitle> TimeList = new LinkedList<Subtitle>();
+		  TimeList.findFirst();
+		while(!TimeList.last()){
+		 if(TimeList.retrieve().getStartTime().equals(startTime))
+			 TimeList.findNext();
+		while(!TimeList.retrieve().getEndTime().equals(endTime))
+			TimeList.insert(TimeList.retrieve());
+		}
+		return TimeList;
+			
 	}
 
 	@Override
