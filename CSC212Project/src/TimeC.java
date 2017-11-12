@@ -1,10 +1,14 @@
 
 public class TimeC implements Time {
+         
+	
+	
 	private int HH;
 	private int MM;
 	private int SS;
 	private int MS;
-	
+
+
 	@Override
 	public int getHH() {
 		// TODO Auto-generated method stub
@@ -31,25 +35,25 @@ public class TimeC implements Time {
 
 	@Override
 	public void setHH(int hh) {
-		this.HH = hh;
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void setMM(int mm) {
-		this.MM = mm;
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void setSS(int ss) {
-		this.SS = ss;
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void setMS(int ms) {
-		this.MS = ms;
+		// TODO Auto-generated method stub
 		
 	}
 
