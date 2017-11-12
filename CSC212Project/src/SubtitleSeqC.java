@@ -8,8 +8,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 	}
 
 	@Override
-	public List<Subtitle> getSubtitles() {
-		// TODO Auto-generated method stub
+	public List<Subtitle> getSubtitles(){
 		return this.ListofSubs;
 	}
 
@@ -33,13 +32,34 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public void remove(String str) {
-		// TODO Auto-generated method stub
-		
+		if(this.ListofSubs.empty())
+			return;
+		ListofSubs.findFirst();
+		while(!ListofSubs.last()) {
+			if(ListofSubs.retrieve().getText().equalsIgnoreCase(str))
+				ListofSubs.remove();
+			ListofSubs.findNext();
+		}
+		if(ListofSubs.retrieve().getText().equalsIgnoreCase(str))
+			ListofSubs.remove();
 	}
 
 	@Override
 	public void replace(String str1, String str2) {
-		// TODO Auto-generated method stub
+		if(this.ListofSubs.empty())
+			return;
+		ListofSubs.findFirst();
+		while(!ListofSubs.last()) {
+			Subtitle tmp = ListofSubs.retrieve();
+			if(tmp.getText().equalsIgnoreCase(str1))
+				tmp.setText(str2);
+			ListofSubs.update(tmp);
+			ListofSubs.findNext();
+		}
+		Subtitle tmp = ListofSubs.retrieve();
+		if(tmp.getText().equalsIgnoreCase(str1))
+			tmp.setText(str2);
+		ListofSubs.update(tmp);
 		
 	}
 
