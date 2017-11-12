@@ -10,7 +10,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 	@Override
 	public List<Subtitle> getSubtitles() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.ListofSubs;
 	}
 
 	@Override
