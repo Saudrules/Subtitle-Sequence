@@ -3,7 +3,7 @@ public class SubtitleSeqC implements SubtitleSeq {
     List<Subtitle> ListofSubs = new LinkedList<Subtitle>();
 	@Override
 	public void addSubtitle(Subtitle st) {
-		
+		ListofSubs.insert(st);
 		
 	}
 
