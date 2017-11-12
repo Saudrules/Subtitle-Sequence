@@ -1,5 +1,6 @@
 // Interface representing time
 public interface Time {
+	
 	int getHH();
 
 	int getMM();
