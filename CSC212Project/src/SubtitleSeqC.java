@@ -14,7 +14,15 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public Subtitle getSubtitle(Time time) {
-		// TODO Auto-generated method stub
+		ListofSubs.findFirst();
+		while(!ListofSubs.last()){
+			if(ListofSubs.retrieve().getStartTime().equals(time))
+				return ListofSubs.retrieve();
+			ListofSubs.findNext();
+		}
+		if(ListofSubs.retrieve().getStartTime().equals(time))
+			return ListofSubs.retrieve();
+		
 		return null;
 	}
 
