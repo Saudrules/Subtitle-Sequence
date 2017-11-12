@@ -11,7 +11,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 	public List<Subtitle> getSubtitles(){
 		return this.ListofSubs;
 	}
-
+	//ADD EMPTY CONDITION
 	@Override
 	public Subtitle getSubtitle(Time time) {
 		ListofSubs.findFirst();
@@ -25,7 +25,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 		return null;
 	}
-
+	//ADD EMPTY CONDITION
 	@Override
 	public List<Subtitle> getSubtitles(Time startTime, Time endTime) {
 		List<Subtitle> TimeList = new LinkedList<Subtitle>();
@@ -99,8 +99,27 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public void shift(int offset) {
-		// TODO Auto-generated method stub
-		
+		if(this.ListofSubs.empty() || (offset<0) )
+			return;
+		else {
+			ListofSubs.findFirst();
+			while(!ListofSubs.last()) {
+				Subtitle tmp = ListofSubs.retrieve();
+				int tmpSTime = tmp.getStartTime().getMS();
+				tmpSTime += offset;
+				tmp.getStartTime().setMS(tmpSTime);
+				int tmpETime = tmp.getEndTime().getMS();
+				tmpETime += offset;
+				tmp.getStartTime().setMS(tmpETime);
+			}
+			Subtitle tmp = ListofSubs.retrieve();
+			int tmpSTime = tmp.getStartTime().getMS();
+			tmpSTime += offset;
+			tmp.getStartTime().setMS(tmpSTime);
+			int tmpETime = tmp.getEndTime().getMS();
+			tmpETime += offset;
+			tmp.getStartTime().setMS(tmpETime);
+		}
 	}
 
 	@Override
