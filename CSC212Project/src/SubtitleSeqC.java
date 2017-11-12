@@ -21,12 +21,12 @@ public class SubtitleSeqC implements SubtitleSeq {
 	@Override
 	public List<Subtitle> getSubtitles(Time startTime, Time endTime) {
 		List<Subtitle> TimeList = new LinkedList<Subtitle>();
-		  TimeList.findFirst();
-		while(!TimeList.last()){
-		 if(TimeList.retrieve().getStartTime().equals(startTime))
-			 TimeList.findNext();
-		while(!TimeList.retrieve().getEndTime().equals(endTime))
-			TimeList.insert(TimeList.retrieve());
+		ListofSubs.findFirst();
+		while(!ListofSubs.last()){
+		 if(ListofSubs.retrieve().getStartTime().equals(startTime))
+			 ListofSubs.findNext();
+		while(!ListofSubs.retrieve().getEndTime().equals(endTime))
+			TimeList.insert(ListofSubs.retrieve());
 		}
 		return TimeList;
 			
