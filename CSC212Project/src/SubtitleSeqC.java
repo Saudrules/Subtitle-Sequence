@@ -1,6 +1,6 @@
 
 public class SubtitleSeqC implements SubtitleSeq {
-    List<Subtitle> ListofSubs = new LinkedList<Subtitle>();
+	LinkedList<Subtitle> ListofSubs = new LinkedList<Subtitle>();
 	@Override
 	public void addSubtitle(Subtitle st) {
 		ListofSubs.insert(st);
@@ -38,8 +38,11 @@ public class SubtitleSeqC implements SubtitleSeq {
 			while(!ListofSubs.last()){
 				if(ListofSubs.retrieve().getStartTime().equals(startTime))
 					ListofSubs.findNext();
-				while(!ListofSubs.retrieve().getEndTime().equals(endTime))
+				while(!ListofSubs.retrieve().getEndTime().equals(endTime)) {
 					TimeList.insert(ListofSubs.retrieve());
+					ListofSubs.findNext();
+				}
+				ListofSubs.findNext();
 			}
 			return TimeList;
 		}	
@@ -129,8 +132,24 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public void cut(Time startTime, Time endTime) {
-		// TODO Auto-generated method stub
-		
+		if(this.ListofSubs.empty())
+			return;
+		else {
+			this.ListofSubs.findFirst();
+			while(!this.ListofSubs.last()) {
+				if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
+					while(!this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
+						this.ListofSubs.remove();
+						this.ListofSubs.findNext();
+					}
+				}	
+				if(this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
+					this.ListofSubs.remove();
+					this.ListofSubs.findNext();
+				}
+				this.ListofSubs.findNext();
+			}
+		}
 	}
 
 }
