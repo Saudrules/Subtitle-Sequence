@@ -148,6 +148,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 						this.ListofSubs.findNext();
 					}
 				}
+				this.ListofSubs.findNext();
 			}
 			Subtitle[]tmpSubs= new Subtitle[size];
 			this.ListofSubs.findFirst();
