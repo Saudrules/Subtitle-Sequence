@@ -181,6 +181,8 @@ public class SubtitleSeqC implements SubtitleSeq {
 						this.ListofSubs.update(tmpNode);
 						this.ListofSubs.findNext();
 					}
+				}
+				this.ListofSubs.findNext();
 			}
 		}
 	}
