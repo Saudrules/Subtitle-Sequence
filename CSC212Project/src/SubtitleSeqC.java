@@ -108,7 +108,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 		ListofSubs.update(tmp);
 		
 	}
-
+	//Add conditions for when offset increases MS to 1000+ or SS to 60 etc...
 	@Override
 	public void shift(int offset) {
 		if(this.ListofSubs.empty() || (offset<0) )
