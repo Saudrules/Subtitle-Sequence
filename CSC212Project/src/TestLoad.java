@@ -85,11 +85,12 @@ public class TestLoad {
 							break;
 						}
 						tmpSub.setText(text);
-						System.out.println(text);
+						//System.out.println(text);
 						
 					}
 					else if(sA[i].matches("")) {
 						tmpSeq.addSubtitle(tmpSub);
+						System.out.println(tmpSub.getText());
 						String wS=sA[i];
 						System.out.println(wS);
 					}
