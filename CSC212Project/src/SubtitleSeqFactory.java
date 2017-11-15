@@ -35,55 +35,36 @@
 						
 					}
 				String strF=sF.toString();
-				String sA[]=strF.split("\n");
-				TestLoad help = new TestLoad();
-				if(!isNotCorrupt(sA))
-					return null;
-					for(int i=0;i<sA.length;i++) {
+				String sA[]=strF.split("\n\n");
+				for(int i = 0 ;i<sA.length;i++) {
+					String sB[]=sA[i].split("\n");
+					try {
+						sTime.setHH(Integer.parseInt(sB[1].charAt(0)+""+sB[1].charAt(1)));
+						sTime.setMM(Integer.parseInt(sB[1].charAt(3)+""+sB[1].charAt(4)));
+						sTime.setSS(Integer.parseInt(sB[1].charAt(6)+""+sB[1].charAt(7)));
+						sTime.setMS(Integer.parseInt(sB[1].charAt(9)+""+sB[1].charAt(10)+""+sB[1].charAt(11)));
+						eTime.setHH(Integer.parseInt(sB[1].charAt(17)+""+sB[1].charAt(18)));
+						eTime.setMM(Integer.parseInt(sB[1].charAt(20)+""+sB[1].charAt(21)));
+						eTime.setSS(Integer.parseInt(sB[1].charAt(23)+""+sB[1].charAt(24)));
+						eTime.setMS(Integer.parseInt(sB[1].charAt(26)+""+sB[1].charAt(27)+""+sB[1].charAt(28)));
+						}
+						catch(NumberFormatException e) {
+							return null;
+						}
+						tmpSub.setStartTime(sTime);
+						tmpSub.setEndTime(eTime);
 						
-					 if(sA[i].matches("^\\d+$")) {
-							index = sA[i];
-						}
-						else if(sA[i].matches("^\\d{2}:\\d{2}:\\d{2},\\d{3}.*\\d{2}:\\d{2}:\\d{2},\\d{3}$")) {
-							timeLine = sA[i];
-							try {
-							sTime.setHH(Integer.parseInt(timeLine.charAt(0)+""+timeLine.charAt(1)));
-							sTime.setMM(Integer.parseInt(timeLine.charAt(3)+""+timeLine.charAt(4)));
-							sTime.setSS(Integer.parseInt(timeLine.charAt(6)+""+timeLine.charAt(7)));
-							sTime.setMS(Integer.parseInt(timeLine.charAt(9)+""+timeLine.charAt(10)+""+timeLine.charAt(11)));
-							eTime.setHH(Integer.parseInt(timeLine.charAt(17)+""+timeLine.charAt(18)));
-							eTime.setMM(Integer.parseInt(timeLine.charAt(20)+""+timeLine.charAt(21)));
-							eTime.setSS(Integer.parseInt(timeLine.charAt(23)+""+timeLine.charAt(24)));
-							eTime.setMS(Integer.parseInt(timeLine.charAt(26)+""+timeLine.charAt(27)+""+timeLine.charAt(28)));
-							}
-							catch(NumberFormatException e) {
-								return null;
-							}
-							tmpSub.setStartTime(sTime);
-							tmpSub.setEndTime(eTime);
-						}
-						else if(sA[i].matches(".+")) {
-								text =sA[i];	
-								try {
-									if(sA[i+1].matches(".+") && !(sA[i].matches(""))) {
-										text +=sA[i+1];
-										}
-									}
-									catch(ArrayIndexOutOfBoundsException e) {
-										break;
-									}
-							
-							
+						if(sB.length==4) {
+							text=sB[2]+"\n"+sB[3];
 							tmpSub.setText(text);
-						}
-						else if(sA[i].matches("")) {
-							tmpSeq.addSubtitle(tmpSub);
-							String wS=sA[i];
-							System.out.println(wS);
-						}
-						
-
-					}
+				}
+						else {
+							text=sB[2];
+						tmpSub.setText(text);
+						}		
+						tmpSeq.addSubtitle(tmpSub);
+				}
+					
 					
 				}
 				catch(IOException e) {

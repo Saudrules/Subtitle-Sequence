@@ -3,7 +3,7 @@ import java.io.*;
 public class TestLoad {
 
 	public static void main(String[] args) {
-	/*	SubtitleSeqC seq = new SubtitleSeqC();
+		SubtitleSeqC seq = new SubtitleSeqC();
 		SubtitleC sub = new SubtitleC();
 		
 		seq = (SubtitleSeqC) SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
@@ -13,9 +13,9 @@ public class TestLoad {
 		seq.getSubtitles().findNext();
 		}
 		System.out.println(seq.getSubtitles().retrieve().getText());
-*/
+
 	
-		SubtitleSeqC tmpSeq = new SubtitleSeqC();
+		/*SubtitleSeqC tmpSeq = new SubtitleSeqC();
 		SubtitleC tmpSub = new SubtitleC(); 
 		TimeC sTime = new TimeC();
 		TimeC eTime = new TimeC();
@@ -41,7 +41,10 @@ public class TestLoad {
 				}
 			String strF=sF.toString();
 			String sA[]=strF.split("\n");
-			//System.out.println(sA[10]+"\n"+sA[11]);
+			String sAW[]=strF.split("\n\n");
+			for(int i=0;i<sAW.length;i++) {
+				System.out.println(sAW[i]);
+			}
 				for(int i=0;i<sA.length;i++) {
 					
 				 if(sA[i].matches("^\\d+$")) {
@@ -68,7 +71,7 @@ public class TestLoad {
 						eTime.setMS(Integer.parseInt(timeLine.charAt(26)+""+timeLine.charAt(27)+""+timeLine.charAt(28)));
 						tmpSub.setStartTime(sTime);
 						tmpSub.setEndTime(eTime);
-						System.out.println(sHH+":"+sMM+":"+sSS+","+sMS+"-"+eHH+":"+eMM+":"+eSS+","+eMS);
+						//System.out.println(sHH+":"+sMM+":"+sSS+","+sMS+"-"+eHH+":"+eMM+":"+eSS+","+eMS);
 						
 						//parsing and setting time
 						//System.out.println(timeLine);
@@ -77,7 +80,7 @@ public class TestLoad {
 						
 						text =sA[i];
 						try {
-						if(sA[i+1].matches(".+") && !(sA[i].matches(""))) {
+						if(sA[i+1].matches(".+\n\n")) {
 							text +=sA[i+1];
 							}
 						}
@@ -90,9 +93,10 @@ public class TestLoad {
 					}
 					else if(sA[i].matches("")) {
 						tmpSeq.addSubtitle(tmpSub);
-						System.out.println(tmpSub.getText());
+				//		System.out.println(tmpSub.getText());
+					//	System.out.println();
 						String wS=sA[i];
-						System.out.println(wS);
+						
 					}
 					
 
@@ -104,7 +108,12 @@ public class TestLoad {
 				e.printStackTrace();
 			}
 		
-	
+	tmpSeq.getSubtitles().findFirst();
+	/*while(!tmpSeq.getSubtitles().last()) {
+		System.out.println(tmpSeq.getSubtitles().retrieve().getText());
+		System.out.println();
+		tmpSeq.getSubtitles().findNext();
+	}*/
 	
 		
 }
