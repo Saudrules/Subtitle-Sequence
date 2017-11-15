@@ -20,7 +20,7 @@
 			BufferedReader s =null;
 		
 		try {
-		s = new BufferedReader(new FileReader("winnie-the-pooh-2011.srt"));
+		s = new BufferedReader(new FileReader(fileName));
 		}
 		catch(FileNotFoundException e) {
 			return null;
