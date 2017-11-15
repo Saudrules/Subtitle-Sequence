@@ -63,9 +63,16 @@
 							tmpSub.setEndTime(eTime);
 						}
 						else if(sA[i].matches(".+")) {
-							while(sA[i].matches(".+")) {
-								text +=sA[i];	
-							}
+								text =sA[i];	
+								try {
+									if(sA[i+1].matches(".+") && !(sA[i].matches(""))) {
+										text +=sA[i+1];
+										}
+									}
+									catch(ArrayIndexOutOfBoundsException e) {
+										break;
+									}
+							
 							
 							tmpSub.setText(text);
 						}

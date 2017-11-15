@@ -1,11 +1,9 @@
 
 public class SubtitleSeqC implements SubtitleSeq {
 	
-	private LinkedList<Subtitle> ListofSubs;
+	private LinkedList<Subtitle> ListofSubs = new LinkedList<Subtitle>() ;
 	
-	public SubtitleSeqC() {
-		ListofSubs = new LinkedList<Subtitle>();
-	}
+	
 	@Override
 	public void addSubtitle(Subtitle st) {
 		ListofSubs.insert(st);

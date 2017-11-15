@@ -3,15 +3,17 @@ import java.io.*;
 public class TestLoad {
 
 	public static void main(String[] args) {
-		/*SubtitleSeqC seq = new SubtitleSeqC();
+	/*	SubtitleSeqC seq = new SubtitleSeqC();
 		SubtitleC sub = new SubtitleC();
 		
 		seq = (SubtitleSeqC) SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
 		seq.getSubtitles().findFirst();
 		while(!seq.getSubtitles().last()) {
 			System.out.println(seq.getSubtitles().retrieve().getText());
-			seq.getSubtitles().findNext();
-		}*/
+		seq.getSubtitles().findNext();
+		}
+		System.out.println(seq.getSubtitles().retrieve().getText());
+*/
 	
 		SubtitleSeqC tmpSeq = new SubtitleSeqC();
 		SubtitleC tmpSub = new SubtitleC(); 
@@ -39,7 +41,7 @@ public class TestLoad {
 				}
 			String strF=sF.toString();
 			String sA[]=strF.split("\n");
-			TestLoad help = new TestLoad();
+			//System.out.println(sA[10]+"\n"+sA[11]);
 				for(int i=0;i<sA.length;i++) {
 					
 				 if(sA[i].matches("^\\d+$")) {
@@ -47,6 +49,15 @@ public class TestLoad {
 					}
 					else if(sA[i].matches("^\\d{2}:\\d{2}:\\d{2},\\d{3}.*\\d{2}:\\d{2}:\\d{2},\\d{3}$")) {
 						timeLine = sA[i];
+						int sHH,sMM,sSS,sMS,eHH,eMM,eSS,eMS;
+						sHH=Integer.parseInt(timeLine.charAt(0)+""+timeLine.charAt(1));
+						sMM=Integer.parseInt(timeLine.charAt(3)+""+timeLine.charAt(4));
+						sSS=Integer.parseInt(timeLine.charAt(6)+""+timeLine.charAt(7));
+						sMS=Integer.parseInt(timeLine.charAt(9)+""+timeLine.charAt(10)+""+timeLine.charAt(11));
+						eHH=Integer.parseInt(timeLine.charAt(17)+""+timeLine.charAt(18));
+						eMM=Integer.parseInt(timeLine.charAt(20)+""+timeLine.charAt(21));
+						eSS=Integer.parseInt(timeLine.charAt(23)+""+timeLine.charAt(24));
+						eMS=Integer.parseInt(timeLine.charAt(26)+""+timeLine.charAt(27)+""+timeLine.charAt(28));
 						sTime.setHH(Integer.parseInt(timeLine.charAt(0)+""+timeLine.charAt(1)));
 						sTime.setMM(Integer.parseInt(timeLine.charAt(3)+""+timeLine.charAt(4)));
 						sTime.setSS(Integer.parseInt(timeLine.charAt(6)+""+timeLine.charAt(7)));
@@ -57,13 +68,22 @@ public class TestLoad {
 						eTime.setMS(Integer.parseInt(timeLine.charAt(26)+""+timeLine.charAt(27)+""+timeLine.charAt(28)));
 						tmpSub.setStartTime(sTime);
 						tmpSub.setEndTime(eTime);
-						
+						System.out.println(sHH+":"+sMM+":"+sSS+","+sMS+"-"+eHH+":"+eMM+":"+eSS+","+eMS);
 						
 						//parsing and setting time
 						//System.out.println(timeLine);
 					}
 					else if(sA[i].matches(".+")) {
+						
 						text =sA[i];
+						try {
+						if(sA[i+1].matches(".+") && !(sA[i].matches(""))) {
+							text +=sA[i+1];
+							}
+						}
+						catch(ArrayIndexOutOfBoundsException e) {
+							break;
+						}
 						tmpSub.setText(text);
 						System.out.println(text);
 						
