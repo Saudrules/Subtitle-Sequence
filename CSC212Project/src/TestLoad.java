@@ -3,7 +3,19 @@ import java.io.*;
 public class TestLoad {
 
 	public static void main(String[] args) {
-		SubtitleSeqC tmpSeq = new SubtitleSeqC();
+		SubtitleSeqFactory fac = new SubtitleSeqFactory();
+		SubtitleSeqC seq = new SubtitleSeqC();
+		SubtitleC sub = new SubtitleC();
+		
+		seq = (SubtitleSeqC) SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
+		LinkedList<Subtitle> list=(LinkedList<Subtitle>) seq.getSubtitles();
+		list.findFirst();
+		while(!list.last()) {
+			System.out.println(list.retrieve().getText());
+			list.findNext();
+		}
+	}
+	/*	SubtitleSeqC tmpSeq = new SubtitleSeqC();
 		SubtitleC tmpSub = new SubtitleC(); 
 		TimeC sTime = new TimeC();
 		TimeC eTime = new TimeC();
@@ -92,6 +104,6 @@ public class TestLoad {
 					return false;
 			}
 			return true;
-	}
+	}*/
 
 }
