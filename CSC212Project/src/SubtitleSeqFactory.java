@@ -16,7 +16,7 @@
 			SubtitleC tmpSub = new SubtitleC(); 
 			TimeC sTime = new TimeC();
 			TimeC eTime = new TimeC();
-			String index, timeLine, text;
+			String index, timeLine, text = null;
 			BufferedReader s =null;
 		
 		try {
@@ -63,7 +63,10 @@
 							tmpSub.setEndTime(eTime);
 						}
 						else if(sA[i].matches(".+")) {
-							text =sA[i];
+							while(sA[i].matches(".+")) {
+								text +=sA[i];	
+							}
+							
 							tmpSub.setText(text);
 						}
 						else if(sA[i].matches("")) {

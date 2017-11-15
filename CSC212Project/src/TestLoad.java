@@ -3,23 +3,23 @@ import java.io.*;
 public class TestLoad {
 
 	public static void main(String[] args) {
-		SubtitleSeqFactory fac = new SubtitleSeqFactory();
-		SubtitleSeqC seq = new SubtitleSeqC();
+		/*SubtitleSeqC seq = new SubtitleSeqC();
 		SubtitleC sub = new SubtitleC();
 		
 		seq = (SubtitleSeqC) SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
-		LinkedList<Subtitle> list=(LinkedList<Subtitle>) seq.getSubtitles();
-		list.findFirst();
-		while(!list.last()) {
-			System.out.println(list.retrieve().getText());
-			list.findNext();
-		}
+		seq.getSubtitles().findFirst();
+		while(!seq.getSubtitles().last()) {
+			System.out.println(seq.getSubtitles().retrieve().getText());
+			seq.getSubtitles().findNext();
+		}*/
 	
-		/*SubtitleSeqC tmpSeq = new SubtitleSeqC();
+		SubtitleSeqC tmpSeq = new SubtitleSeqC();
 		SubtitleC tmpSub = new SubtitleC(); 
 		TimeC sTime = new TimeC();
 		TimeC eTime = new TimeC();
 		BufferedReader s =null;
+		String index, timeLine, text = null;
+
 		
 	
 	try {
@@ -58,12 +58,14 @@ public class TestLoad {
 						tmpSub.setStartTime(sTime);
 						tmpSub.setEndTime(eTime);
 						
+						
 						//parsing and setting time
 						//System.out.println(timeLine);
 					}
-					else if(sA[i].matches(".+")&&!(sA[i].matches("^\\d+$"))) {
+					else if(sA[i].matches(".+")) {
 						text =sA[i];
 						tmpSub.setText(text);
+						System.out.println(text);
 						
 					}
 					else if(sA[i].matches("")) {
@@ -74,16 +76,13 @@ public class TestLoad {
 					
 
 				}
-				while(!tmpSeq.getSubtitles().last()) {
-					System.out.println(tmpSeq.getSubtitles().retrieve().getText());
-					tmpSeq.getSubtitles().findNext();
-				}
+			
 				
 			}
 			catch(IOException e) {
-				e.printStackTrace();;
+				e.printStackTrace();
 			}
-		*/
+		
 	
 	
 		
