@@ -37,7 +37,7 @@
 				String strF=sF.toString();
 				String sA[]=strF.split("\n");
 				TestLoad help = new TestLoad();
-				if(isNotCorrupt(sA))
+				if(!isNotCorrupt(sA))
 					return null;
 					for(int i=0;i<sA.length;i++) {
 						
@@ -46,6 +46,7 @@
 						}
 						else if(sA[i].matches("^\\d{2}:\\d{2}:\\d{2},\\d{3}.*\\d{2}:\\d{2}:\\d{2},\\d{3}$")) {
 							timeLine = sA[i];
+							try {
 							sTime.setHH(Integer.parseInt(timeLine.charAt(0)+""+timeLine.charAt(1)));
 							sTime.setMM(Integer.parseInt(timeLine.charAt(3)+""+timeLine.charAt(4)));
 							sTime.setSS(Integer.parseInt(timeLine.charAt(6)+""+timeLine.charAt(7)));
@@ -54,6 +55,10 @@
 							eTime.setMM(Integer.parseInt(timeLine.charAt(20)+""+timeLine.charAt(21)));
 							eTime.setSS(Integer.parseInt(timeLine.charAt(23)+""+timeLine.charAt(24)));
 							eTime.setMS(Integer.parseInt(timeLine.charAt(26)+""+timeLine.charAt(27)+""+timeLine.charAt(28)));
+							}
+							catch(NumberFormatException e) {
+								return null;
+							}
 							tmpSub.setStartTime(sTime);
 							tmpSub.setEndTime(eTime);
 						}
