@@ -57,13 +57,13 @@
 						if(sB.length==4) {
 							text=sB[2]+"\n"+sB[3];
 							tmpSub.setText(text);
-				}
+						}
 						else {
 							text=sB[2];
 						tmpSub.setText(text);
 						}		
 						tmpSeq.addSubtitle(tmpSub);
-				}
+					}
 					
 					
 				}

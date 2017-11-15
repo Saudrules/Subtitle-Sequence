@@ -1,7 +1,7 @@
 
 public class SubtitleSeqC implements SubtitleSeq {
 	
-	private LinkedList<Subtitle> ListofSubs = new LinkedList<Subtitle>() ;
+	private List<Subtitle> ListofSubs = new LinkedList<Subtitle>() ;
 	
 	
 	@Override
@@ -190,27 +190,47 @@ public class SubtitleSeqC implements SubtitleSeq {
 			}
 		}
 	}
-	/* 
-	 //Our Previous cut method
-	 public void cut(Time startTime, Time endTime) {
-		if(this.ListofSubs.empty())
-			return;
-		else {
-			this.ListofSubs.findFirst();
-			while(!this.ListofSubs.last()) {
-				if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
-					while(!this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
-						this.ListofSubs.remove();
-						this.ListofSubs.findNext();
-					}
-				}	
-				if(this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
+		
+		private int ConToMi(Time t){
+			int total = t.getHH()*3600000 + t.getMM()*60000 + t.getSS()*1000 + t.getMS(); 
+			
+			return total ;
+		}
+		private Time BackToTime(int ms){
+			
+			int RealTimeHH = ((ms/3600000)%24) ;
+			int RealTimeMM = ((ms/60000)%60) ;
+			int RealTimeSS = ((ms/1000)%60) ;
+			int RealTimeMS = ms%1000 ;
+			Time R = new TimeC();
+			R.setHH(RealTimeHH);
+			R.setMM(RealTimeMM);
+			R.setSS(RealTimeSS);
+			R.setMS(RealTimeMS);
+			return R;
+		
+	}
+
+}
+/* 
+//Our Previous cut method
+public void cut(Time startTime, Time endTime) {
+	if(this.ListofSubs.empty())
+		return;
+	else {
+		this.ListofSubs.findFirst();
+		while(!this.ListofSubs.last()) {
+			if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
+				while(!this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
 					this.ListofSubs.remove();
 					this.ListofSubs.findNext();
 				}
+			}	
+			if(this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
+				this.ListofSubs.remove();
 				this.ListofSubs.findNext();
 			}
+			this.ListofSubs.findNext();
 		}
-	} */
-
-}
+	}
+} */
