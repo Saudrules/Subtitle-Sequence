@@ -12,8 +12,8 @@
 		// Load a subtitle sequence from an SRT file. If the file does not exist or
 		// is corrupted (incorrect format), null is returned.
 		public static SubtitleSeq loadSubtitleSeq(String fileName) {
-			SubtitleSeqC tmpSeq = new SubtitleSeqC();
-			SubtitleC tmpSub = new SubtitleC(); 
+			SubtitleSeq tmpSeq = new SubtitleSeqC();
+			Subtitle tmpSub = new SubtitleC(); 
 			TimeC sTime = new TimeC();
 			TimeC eTime = new TimeC();
 			String index, timeLine, text = null;
@@ -23,6 +23,7 @@
 		s = new BufferedReader(new FileReader(fileName));
 		}
 		catch(FileNotFoundException e) {
+			System.out.println("FILE NOT FOUND!");
 			return null;
 			
 		}
@@ -49,6 +50,7 @@
 						eTime.setMS(Integer.parseInt(sB[1].charAt(26)+""+sB[1].charAt(27)+""+sB[1].charAt(28)));
 						}
 						catch(NumberFormatException e) {
+							System.out.println("PARSING ERROR");
 							return null;
 						}
 						tmpSub.setStartTime(sTime);
@@ -68,6 +70,7 @@
 					
 				}
 				catch(IOException e) {
+					System.out.println("io e");
 					return null;
 				}
 			

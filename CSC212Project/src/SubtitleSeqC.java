@@ -6,8 +6,35 @@ public class SubtitleSeqC implements SubtitleSeq {
 	
 	@Override
 	public void addSubtitle(Subtitle st) {
-		ListofSubs.insert(st);
-		
+		if(ListofSubs.empty())
+			ListofSubs.insert(st);
+		else {
+			Subtitle tmpSub;
+			int tmpTime = toMS(st.getStartTime());
+			int curTime;
+			
+			ListofSubs.findFirst();
+			while(!ListofSubs.last()) {
+				curTime = toMS(ListofSubs.retrieve().getStartTime());
+				if(tmpTime<curTime) {
+					tmpSub= ListofSubs.retrieve();
+					ListofSubs.update(st);
+					ListofSubs.insert(tmpSub);
+					return;
+				}
+				ListofSubs.findNext();
+			}
+			curTime = toMS(ListofSubs.retrieve().getStartTime());
+			if(tmpTime<curTime) {
+				tmpSub = ListofSubs.retrieve();
+				ListofSubs.update(st);
+				ListofSubs.insert(tmpSub);
+				return;
+			}
+	
+			ListofSubs.insert(st);
+			ListofSubs.findNext();
+		}
 	}
 
 	@Override
@@ -21,11 +48,11 @@ public class SubtitleSeqC implements SubtitleSeq {
 			return null;
 		ListofSubs.findFirst();
 		while(!ListofSubs.last()){
-			if(ListofSubs.retrieve().getStartTime().equals(time))
+			if(toMS(ListofSubs.retrieve().getStartTime()) == toMS(time))
 				return ListofSubs.retrieve();
 			ListofSubs.findNext();
 		}
-		if(ListofSubs.retrieve().getStartTime().equals(time))
+		if(toMS(ListofSubs.retrieve().getStartTime()) == toMS(time))
 			return ListofSubs.retrieve();
 		
 		return null;
@@ -191,12 +218,12 @@ public class SubtitleSeqC implements SubtitleSeq {
 		}
 	}
 		
-		private int ConToMi(Time t){
+		private int toMS(Time t){
 			int total = t.getHH()*3600000 + t.getMM()*60000 + t.getSS()*1000 + t.getMS(); 
 			
 			return total ;
 		}
-		private Time BackToTime(int ms){
+		private Time toTime(int ms){
 			
 			int RealTimeHH = ((ms/3600000)%24) ;
 			int RealTimeMM = ((ms/60000)%60) ;

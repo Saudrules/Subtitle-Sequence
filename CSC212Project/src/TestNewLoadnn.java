@@ -5,9 +5,10 @@ import java.io.IOException;
 
 public class TestNewLoadnn {
 
-	public static void main(String[] args) {
-		SubtitleSeqC tmpSeq = new SubtitleSeqC();
-		SubtitleC tmpSub = new SubtitleC(); 
+	public static void main(String[] args) throws Exception {
+		List<Subtitle> tLi= new LinkedList<Subtitle>();
+		SubtitleSeq tmpSeq = new SubtitleSeqC();
+		Subtitle tmpSub = new SubtitleC(); 
 		TimeC sTime = new TimeC();
 		TimeC eTime = new TimeC();
 		String index, timeLine, text = null;
@@ -56,21 +57,19 @@ public class TestNewLoadnn {
 						text=sB[2];
 					tmpSub.setText(text);
 					}		
-					tmpSeq.addSubtitle(tmpSub);
+					tLi.insert(tmpSub);
+					
 			}
 				
 				
 			}
 			catch(IOException e) {
 				e.printStackTrace();;
-			}
-			LinkedList<Subtitle>tmpList=(LinkedList<Subtitle>) tmpSeq.getSubtitles();
-			tmpList.findFirst();
-			while(!tmpList.last()) {
-				System.out.println(tmpList.retrieve().getText());
-				System.out.println();
-				tmpList.findNext();
+			}tLi.findFirst();
+			while(!tLi.last()) {
+				System.out.println(tLi.retrieve().getText());
+				tLi.findNext();
 			}
 	}
-
+	
 }
