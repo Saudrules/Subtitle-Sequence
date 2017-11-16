@@ -23,7 +23,6 @@
 		s = new BufferedReader(new FileReader(fileName));
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("FILE NOT FOUND!");
 			return null;
 			
 		}
@@ -50,7 +49,6 @@
 						eTime.setMS(Integer.parseInt(sB[1].charAt(26)+""+sB[1].charAt(27)+""+sB[1].charAt(28)));
 						}
 						catch(NumberFormatException e) {
-							System.out.println("PARSING ERROR");
 							return null;
 						}
 						tmpSub.setStartTime(sTime);
@@ -66,11 +64,10 @@
 						}		
 						tmpSeq.addSubtitle(tmpSub);
 					}
-					
+				s.close();
 					
 				}
 				catch(IOException e) {
-					System.out.println("io e");
 					return null;
 				}
 			

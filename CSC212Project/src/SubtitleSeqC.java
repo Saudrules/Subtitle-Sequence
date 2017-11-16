@@ -7,33 +7,30 @@ public class SubtitleSeqC implements SubtitleSeq {
 	@Override
 	public void addSubtitle(Subtitle st) {
 		if(ListofSubs.empty())
-			ListofSubs.insert(st);
+		ListofSubs.insert(st);
 		else {
-			Subtitle tmpSub;
-			int tmpTime = toMS(st.getStartTime());
-			int curTime;
-			
 			ListofSubs.findFirst();
 			while(!ListofSubs.last()) {
-				curTime = toMS(ListofSubs.retrieve().getStartTime());
-				if(tmpTime<curTime) {
-					tmpSub= ListofSubs.retrieve();
+				if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
+					ListofSubs.insert(st);
+					return;
+				}
+				else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
+					Subtitle tmpSub= ListofSubs.retrieve();
 					ListofSubs.update(st);
 					ListofSubs.insert(tmpSub);
 					return;
 				}
 				ListofSubs.findNext();
 			}
-			curTime = toMS(ListofSubs.retrieve().getStartTime());
-			if(tmpTime<curTime) {
-				tmpSub = ListofSubs.retrieve();
+			if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
+				ListofSubs.insert(st);
+			}
+			else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
+				Subtitle tmpSub= ListofSubs.retrieve();
 				ListofSubs.update(st);
 				ListofSubs.insert(tmpSub);
-				return;
 			}
-	
-			ListofSubs.insert(st);
-			ListofSubs.findNext();
 		}
 	}
 
@@ -60,26 +57,21 @@ public class SubtitleSeqC implements SubtitleSeq {
 	
 	@Override
 	public List<Subtitle> getSubtitles(Time startTime, Time endTime) {
-		List<Subtitle> TimeList = new LinkedList<Subtitle>();
-		if(this.ListofSubs.empty())
-			return TimeList;
-		else {	
-			ListofSubs.findFirst();
-			while(!ListofSubs.last()){
-				if(ListofSubs.retrieve().getStartTime().equals(startTime)) {
-				while(!ListofSubs.retrieve().getEndTime().equals(endTime)) {
-					TimeList.insert(ListofSubs.retrieve());
-					ListofSubs.findNext();
-				}
-				if(ListofSubs.retrieve().getEndTime().equals(endTime)) {
-					TimeList.insert(ListofSubs.retrieve());
-					ListofSubs.findNext();
-				}
-			   }
-				ListofSubs.findNext();
-			}
-			return TimeList;
-		}	
+		List<Subtitle> tmpList;
+		SubtitleSeq tmpSeq = new SubtitleSeqC();
+		
+		ListofSubs.findFirst();
+		while(!ListofSubs.last()) {
+			if((toMS(startTime)>=toMS(ListofSubs.retrieve().getStartTime()))&&
+					(toMS(endTime)<=toMS(ListofSubs.retrieve().getEndTime())))
+				tmpSeq.addSubtitle(ListofSubs.retrieve());
+			ListofSubs.findNext();
+		}
+		if((toMS(startTime)>=toMS(ListofSubs.retrieve().getStartTime()))&&
+				(toMS(endTime)<=toMS(ListofSubs.retrieve().getEndTime())))
+			tmpSeq.addSubtitle(ListofSubs.retrieve());
+		tmpList = tmpSeq.getSubtitles();
+		return tmpList;
 	}
 
 	@Override
@@ -273,25 +265,55 @@ public class SubtitleSeqC implements SubtitleSeq {
 			
 		}
 }
-/* 
-//Our Previous cut method
-public void cut(Time startTime, Time endTime) {
-	if(this.ListofSubs.empty())
+
+//d7e9 add
+/*	if(ListofSubs.empty())
+ListofSubs.insert(st);
+else {
+Subtitle tmpSub;
+int tmpTime = toMS(st.getStartTime());
+int curTime;
+
+ListofSubs.findFirst();
+while(!ListofSubs.last()) {
+	curTime = toMS(ListofSubs.retrieve().getStartTime());
+	if(tmpTime<curTime) {
+		tmpSub= ListofSubs.retrieve();
+		ListofSubs.update(st);
+		ListofSubs.insert(tmpSub);
 		return;
-	else {
-		this.ListofSubs.findFirst();
-		while(!this.ListofSubs.last()) {
-			if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
-				while(!this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
-					this.ListofSubs.remove();
-					this.ListofSubs.findNext();
-				}
-			}	
-			if(this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
-				this.ListofSubs.remove();
-				this.ListofSubs.findNext();
-			}
-			this.ListofSubs.findNext();
-		}
 	}
-} */
+	ListofSubs.findNext();
+}
+curTime = toMS(ListofSubs.retrieve().getStartTime());
+if(tmpTime<curTime) {
+	tmpSub = ListofSubs.retrieve();
+	ListofSubs.update(st);
+	ListofSubs.insert(tmpSub);
+	return;
+}
+
+ListofSubs.insert(st);
+ListofSubs.findNext();
+}*/
+
+//pre get by start and end
+/*if(this.ListofSubs.empty())
+return TimeList;
+else {	
+ListofSubs.findFirst();
+while(!ListofSubs.last()){
+	if(ListofSubs.retrieve().getStartTime().equals(startTime)) {
+	while(!ListofSubs.retrieve().getEndTime().equals(endTime)) {
+		TimeList.insert(ListofSubs.retrieve());
+		ListofSubs.findNext();
+	}
+	if(ListofSubs.retrieve().getEndTime().equals(endTime)) {
+		TimeList.insert(ListofSubs.retrieve());
+		ListofSubs.findNext();
+	}
+   }
+	ListofSubs.findNext();
+}
+return TimeList;
+}	*/
