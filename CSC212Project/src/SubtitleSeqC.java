@@ -138,29 +138,60 @@ public class SubtitleSeqC implements SubtitleSeq {
 		ListofSubs.update(tmp);
 		
 	}
-	//Add conditions for when offset increases MS to 1000+ or SS to 60 etc...
 	@Override
 	public void shift(int offset) {
-		if(this.ListofSubs.empty() || (offset<0) )
+		if(this.ListofSubs.empty() )
 			return;
 		else {
 			ListofSubs.findFirst();
 			while(!ListofSubs.last()) {
-				Subtitle tmp = ListofSubs.retrieve();
-				int tmpSTime = tmp.getStartTime().getMS();
-				tmpSTime += offset;
-				tmp.getStartTime().setMS(tmpSTime);
-				int tmpETime = tmp.getEndTime().getMS();
-				tmpETime += offset;
-				tmp.getStartTime().setMS(tmpETime);
-			}
+			int mST = toMS(ListofSubs.retrieve().getStartTime());
+			int mET = toMS(ListofSubs.retrieve().getEndTime());
+			
+			mST += offset;
+			mET += offset;
+			
+			if(mST < 0)
+				mST = 0;
+			if(mET < 0) {
+				ListofSubs.remove();
+				ListofSubs.findNext();
+				continue;
+			}	
+			
+			Time sT = toTime(mST);
+			Time eT = toTime(mET);
+			
 			Subtitle tmp = ListofSubs.retrieve();
-			int tmpSTime = tmp.getStartTime().getMS();
-			tmpSTime += offset;
-			tmp.getStartTime().setMS(tmpSTime);
-			int tmpETime = tmp.getEndTime().getMS();
-			tmpETime += offset;
-			tmp.getStartTime().setMS(tmpETime);
+			
+			tmp.setStartTime(sT);
+			tmp.setEndTime(eT);
+			
+			ListofSubs.update(tmp);
+			ListofSubs.findNext();
+			}//end of while loop
+			int mST = toMS(ListofSubs.retrieve().getStartTime());
+			int mET = toMS(ListofSubs.retrieve().getEndTime());
+			
+			mST += offset;
+			mET += offset;
+			
+			if(mST < 0)
+				mST = 0;
+			if(mET < 0) {
+				ListofSubs.remove();
+				return;
+			}	
+			
+			Time sT = toTime(mST);
+			Time eT = toTime(mET);
+			
+			Subtitle tmp = ListofSubs.retrieve();
+			
+			tmp.setStartTime(sT);
+			tmp.setEndTime(eT);
+			
+			ListofSubs.update(tmp);
 		}
 	}
 
@@ -168,63 +199,30 @@ public class SubtitleSeqC implements SubtitleSeq {
 	public void cut(Time startTime, Time endTime) {
 		if(this.ListofSubs.empty())
 			return;
-		else {
-			int size=0;
-			this.ListofSubs.findFirst();
-			while(!this.ListofSubs.last()) {
-				if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
-					while(!this.ListofSubs.last()) {
-						size++;
-						this.ListofSubs.findNext();
-					}
+		else{
+			int offset = (toMS(endTime)-toMS(startTime))*(-1);
+			ListofSubs.findFirst();
+			while(!ListofSubs.last()){
+				while((toMS(startTime)>=toMS(ListofSubs.retrieve().getStartTime()))&&
+						(toMS(endTime)<=toMS(ListofSubs.retrieve().getEndTime()))) {
+							this.ListofSubs.remove();
+							this.ListofSubs.findNext();
 				}
 				this.ListofSubs.findNext();
 			}
-			Subtitle[]tmpSubs= new Subtitle[size];
-			this.ListofSubs.findFirst();
-			while(!this.ListofSubs.last()) {
-				if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
-					for(int i = 0; i<=size-1;i++) {
-						tmpSubs[i] = this.ListofSubs.retrieve();
-						this.ListofSubs.findNext();
-					}
-					
+				if((toMS(startTime)>=toMS(ListofSubs.retrieve().getStartTime()))&&
+						(toMS(endTime)<=toMS(ListofSubs.retrieve().getEndTime()))) {
+					this.ListofSubs.remove();
 				}
-				this.ListofSubs.findNext();
-			}
-			this.ListofSubs.findFirst();
-			while(!this.ListofSubs.last()) {
-				if(this.ListofSubs.retrieve().getStartTime().equals(startTime)) {
-					while(!this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
-						this.ListofSubs.remove();
-						this.ListofSubs.findNext();
-					}
-					if(this.ListofSubs.retrieve().getEndTime().equals(endTime)) {
-						this.ListofSubs.remove();
-						this.ListofSubs.findNext();
-					}
-					for(int i = 0; i<=size-1;i++) {
-						Time tmpSTime = tmpSubs[i].getStartTime();
-						Time tmpETime = tmpSubs[i].getEndTime();
-						Subtitle tmpNode= this.ListofSubs.retrieve();
-						tmpNode.setStartTime(tmpSTime);
-						tmpNode.setEndTime(tmpETime);
-						this.ListofSubs.update(tmpNode);
-						this.ListofSubs.findNext();
-					}
-				}
-				this.ListofSubs.findNext();
-			}
+		shift(offset);
 		}
 	}
 		
 		private int toMS(Time t){
-			int total = t.getHH()*3600000 + t.getMM()*60000 + t.getSS()*1000 + t.getMS(); 
-			
-			return total ;
+			return (t.getHH()*3600000 + t.getMM()*60000 + t.getSS()*1000 + t.getMS()) ;
 		}
+		
 		private Time toTime(int ms){
-			
 			int RealTimeHH = ((ms/3600000)%24) ;
 			int RealTimeMM = ((ms/60000)%60) ;
 			int RealTimeSS = ((ms/1000)%60) ;
@@ -235,9 +233,45 @@ public class SubtitleSeqC implements SubtitleSeq {
 			R.setSS(RealTimeSS);
 			R.setMS(RealTimeMS);
 			return R;
+		}
 		
-	}
-
+		public static void main(String[] args) throws Exception {
+			List<Subtitle> lis;
+			Subtitle sub = new SubtitleC();
+			SubtitleSeq seq = new SubtitleSeqC();
+			Time s=new TimeC(),e=new TimeC();;
+			String text;
+			s.setHH(0);
+			s.setMM(0);
+			s.setSS(35);
+			s.setMS(536);
+			sub.setStartTime(s);
+			e.setHH(0);
+			e.setMM(0);
+			e.setSS(37);
+			e.setMS(746);
+			sub.setEndTime(e);
+			sub.setText("[whistling]");
+			seq.addSubtitle(sub);
+			s.setHH(0);
+			s.setMM(1);
+			s.setSS(3);
+			s.setMS(180);
+			sub.setStartTime(s);
+			e.setHH(0);
+			e.setMM(1);
+			e.setSS(5);
+			e.setMS(732);
+			sub.setEndTime(e);
+			sub.setText("[Winnie the Pooh theme song]");
+			seq.addSubtitle(sub);
+			lis=seq.getSubtitles();
+			lis.findFirst();
+			System.out.println(lis.retrieve().getText());
+			lis.findNext();
+			System.out.println(lis.retrieve().getText());
+			
+		}
 }
 /* 
 //Our Previous cut method

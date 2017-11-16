@@ -11,7 +11,7 @@ public class TestWithDisplay {
 			sList.findFirst();
 			while(!sList.last()) {
 				System.out.println(sList.retrieve().getText());
-				sList.findFirst();
+				sList.findNext();
 			}
 		}
 	}
