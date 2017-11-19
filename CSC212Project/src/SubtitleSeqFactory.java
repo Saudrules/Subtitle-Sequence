@@ -1,6 +1,7 @@
 	import java.io.*;
 	import java.util.*;
 	import java.nio.file.*;
+	import java.lang.*;
 	public class SubtitleSeqFactory {
 		
 		// Return an empty subtitles sequence 

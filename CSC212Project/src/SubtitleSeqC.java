@@ -1,4 +1,3 @@
-
 public class SubtitleSeqC implements SubtitleSeq {
 	
 	private List<Subtitle> listOfSubs = new LinkedList<Subtitle>() ;
@@ -241,13 +240,8 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 		public static void main(String[] args) throws Exception {
 			SubtitleSeq seq = SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
-			Time tmp = new TimeC();
-			Time tmp1 = new TimeC();
-			tmp=toTime(0);
-			tmp1=toTime(600000);
-			seq.cut(tmp, tmp1);
 			List<Subtitle> l = seq.getSubtitles();
-			
+		
 			  l.findFirst();
 			  while(!l.last()) {
 				System.out.println(l.retrieve().getText());
@@ -257,54 +251,3 @@ public class SubtitleSeqC implements SubtitleSeq {
 			System.out.println(l.retrieve().getText());
 		}	
 }
-
-
-
-//our old add
-/*if(ListofSubs.empty())
-ListofSubs.insert(st);
-else {
-	ListofSubs.findFirst();
-	while(!ListofSubs.last()) {
-		if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
-			ListofSubs.insert(st);
-			return;
-		}
-		else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
-			Subtitle tmpSub= ListofSubs.retrieve();
-			ListofSubs.update(st);
-			ListofSubs.insert(tmpSub);
-			return;
-		}
-		ListofSubs.findNext();
-	}
-	if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
-		ListofSubs.insert(st);
-	}
-	else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
-		Subtitle tmpSub= ListofSubs.retrieve();
-		ListofSubs.update(st);
-		ListofSubs.insert(tmpSub);
-	}
-}*/
-
-//pre get by start and end
-/*if(this.ListofSubs.empty())
-return TimeList;
-else {	
-ListofSubs.findFirst();
-while(!ListofSubs.last()){
-	if(ListofSubs.retrieve().getStartTime().equals(startTime)) {
-	while(!ListofSubs.retrieve().getEndTime().equals(endTime)) {
-		TimeList.insert(ListofSubs.retrieve());
-		ListofSubs.findNext();
-	}
-	if(ListofSubs.retrieve().getEndTime().equals(endTime)) {
-		TimeList.insert(ListofSubs.retrieve());
-		ListofSubs.findNext();
-	}
-   }
-	ListofSubs.findNext();
-}
-return TimeList;
-}	*/
