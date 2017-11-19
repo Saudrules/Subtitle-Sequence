@@ -13,60 +13,64 @@
 		// is corrupted (incorrect format), null is returned.
 		public static SubtitleSeq loadSubtitleSeq(String fileName) {
 			SubtitleSeq tmpSeq = new SubtitleSeqC();
-			TimeC sTime = new TimeC();
-			TimeC eTime = new TimeC();
-			String index, timeLine, text = null;
-			BufferedReader s =null;
+			BufferedReader buffer =null;
 		
 		try {
-		s = new BufferedReader(new FileReader(fileName));
+		buffer = new BufferedReader(new FileReader(fileName));
 		}
 		catch(FileNotFoundException e) {
 			return null;
 			
 		}
-		StringBuffer sF = new StringBuffer();
-		String tL = null;
+		StringBuffer stringBuffer = new StringBuffer();
+		String line = null;
 					
 				try {
-					while((tL=s.readLine())!=null) {
-					sF.append(tL).append("\n");
+					while((line=buffer.readLine())!=null) {
+					stringBuffer.append(line).append("\n");
 						
 					}
-				String strF=sF.toString();
-				String sA[]=strF.split("\n\n");
-				for(int i = 0 ;i<sA.length;i++) {
+				String toStringBuffer = stringBuffer.toString();
+				String subsArray[] = toStringBuffer.split("\n\n");
+				for(int i = 0 ;i<subsArray.length;i++) {
 					Subtitle tmpSub = new SubtitleC(); 
+					TimeC startTime = new TimeC();
+					TimeC endTime = new TimeC();
+					String text = null;
 
-					String sB[]=sA[i].split("\n");
+					String linesArray[]=subsArray[i].split("\n");
 					try {
-						sTime.setHH(Integer.parseInt(sB[1].charAt(0)+""+sB[1].charAt(1)));
-						sTime.setMM(Integer.parseInt(sB[1].charAt(3)+""+sB[1].charAt(4)));
-						sTime.setSS(Integer.parseInt(sB[1].charAt(6)+""+sB[1].charAt(7)));
-						sTime.setMS(Integer.parseInt(sB[1].charAt(9)+""+sB[1].charAt(10)+""+sB[1].charAt(11)));
-						eTime.setHH(Integer.parseInt(sB[1].charAt(17)+""+sB[1].charAt(18)));
-						eTime.setMM(Integer.parseInt(sB[1].charAt(20)+""+sB[1].charAt(21)));
-						eTime.setSS(Integer.parseInt(sB[1].charAt(23)+""+sB[1].charAt(24)));
-						eTime.setMS(Integer.parseInt(sB[1].charAt(26)+""+sB[1].charAt(27)+""+sB[1].charAt(28)));
+						startTime.setHH(Integer.parseInt(linesArray[1].charAt(0)+""+linesArray[1].charAt(1)));
+						startTime.setMM(Integer.parseInt(linesArray[1].charAt(3)+""+linesArray[1].charAt(4)));
+						startTime.setSS(Integer.parseInt(linesArray[1].charAt(6)+""+linesArray[1].charAt(7)));
+						startTime.setMS(Integer.parseInt(linesArray[1].charAt(9)+""+linesArray[1].charAt(10)+""+linesArray[1].charAt(11)));
+						endTime.setHH(Integer.parseInt(linesArray[1].charAt(17)+""+linesArray[1].charAt(18)));
+						endTime.setMM(Integer.parseInt(linesArray[1].charAt(20)+""+linesArray[1].charAt(21)));
+						endTime.setSS(Integer.parseInt(linesArray[1].charAt(23)+""+linesArray[1].charAt(24)));
+						endTime.setMS(Integer.parseInt(linesArray[1].charAt(26)+""+linesArray[1].charAt(27)+""+linesArray[1].charAt(28)));
 						}
 						catch(NumberFormatException e) {
 							return null;
 						}
-						tmpSub.setStartTime(sTime);
-						tmpSub.setEndTime(eTime);
+						tmpSub.setStartTime(startTime);
+						startTime = null;
+						tmpSub.setEndTime(endTime);
+						endTime = null;
 						
-						if(sB.length==4) {
-							text=sB[2]+"\n"+sB[3];
+						if(linesArray.length==4) {
+							text=linesArray[2]+"\n"+linesArray[3];
 							tmpSub.setText(text);
+							text = null;
 						}
 						else {
-							text=sB[2];
-						tmpSub.setText(text);
+							text=linesArray[2];
+							tmpSub.setText(text);
+							text = null;
 						}		
 						tmpSeq.addSubtitle(tmpSub);
 						tmpSub = null;
 					}
-				s.close();
+				buffer.close();
 					
 				}
 				catch(IOException e) {
