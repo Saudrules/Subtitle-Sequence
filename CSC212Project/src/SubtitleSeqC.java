@@ -144,52 +144,52 @@ public class SubtitleSeqC implements SubtitleSeq {
 		else {
 			listOfSubs.findFirst();
 			while(!listOfSubs.last()) {
-			int mST = toMS(listOfSubs.retrieve().getStartTime());
-			int mET = toMS(listOfSubs.retrieve().getEndTime());
+				int msStartTime = toMS(listOfSubs.retrieve().getStartTime());
+				int msEndTime = toMS(listOfSubs.retrieve().getEndTime());
 			
-			mST += offset;
-			mET += offset;
+				msStartTime += offset;
+				msEndTime += offset;
 			
-			if(mST < 0)
-				mST = 0;
-			if(mET < 0) {
-				listOfSubs.remove();
+				if(msStartTime < 0)
+					msStartTime = 0;
+				if(msEndTime < 0) {
+					listOfSubs.remove();
+					listOfSubs.findNext();
+					continue;
+				}	
+			
+				Time startTime = toTime(msStartTime);
+				Time endTime = toTime(msEndTime);
+			
+				Subtitle tmp = listOfSubs.retrieve();
+			
+				tmp.setStartTime(startTime);
+				tmp.setEndTime(endTime);
+			
+				listOfSubs.update(tmp);
 				listOfSubs.findNext();
-				continue;
-			}	
-			
-			Time sT = toTime(mST);
-			Time eT = toTime(mET);
-			
-			Subtitle tmp = listOfSubs.retrieve();
-			
-			tmp.setStartTime(sT);
-			tmp.setEndTime(eT);
-			
-			listOfSubs.update(tmp);
-			listOfSubs.findNext();
-			}//end of while loop
-			int mST = toMS(listOfSubs.retrieve().getStartTime());
-			int mET = toMS(listOfSubs.retrieve().getEndTime());
-			
-			mST += offset;
-			mET += offset;
-			
-			if(mST < 0)
-				mST = 0;
-			if(mET < 0) {
+			}
+			int msStartTime = toMS(listOfSubs.retrieve().getStartTime());
+			int msEndTime = toMS(listOfSubs.retrieve().getEndTime());
+		
+			msStartTime += offset;
+			msEndTime += offset;
+		
+			if(msStartTime < 0)
+				msStartTime = 0;
+			if(msEndTime < 0) {
 				listOfSubs.remove();
 				return;
 			}	
-			
-			Time sT = toTime(mST);
-			Time eT = toTime(mET);
-			
+		
+			Time startTime = toTime(msStartTime);
+			Time endTime = toTime(msEndTime);
+		
 			Subtitle tmp = listOfSubs.retrieve();
-			
-			tmp.setStartTime(sT);
-			tmp.setEndTime(eT);
-			
+		
+			tmp.setStartTime(startTime);
+			tmp.setEndTime(endTime);
+		
 			listOfSubs.update(tmp);
 		}
 	}
@@ -237,9 +237,6 @@ public class SubtitleSeqC implements SubtitleSeq {
 		public static void main(String[] args) throws Exception {
 			SubtitleSeq seq = SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
 			List<Subtitle> l = seq.getSubtitles();
-			Time tmp=new TimeC();
-			Time tmp1=new TimeC();
-			seq.replace("[whistling]", "Hitler");
 			  l.findFirst();
 			  while(!l.last()) {
 				System.out.println(l.retrieve().getText());
