@@ -13,7 +13,6 @@
 		// is corrupted (incorrect format), null is returned.
 		public static SubtitleSeq loadSubtitleSeq(String fileName) {
 			SubtitleSeq tmpSeq = new SubtitleSeqC();
-			Subtitle tmpSub = new SubtitleC(); 
 			TimeC sTime = new TimeC();
 			TimeC eTime = new TimeC();
 			String index, timeLine, text = null;
@@ -37,6 +36,8 @@
 				String strF=sF.toString();
 				String sA[]=strF.split("\n\n");
 				for(int i = 0 ;i<sA.length;i++) {
+					Subtitle tmpSub = new SubtitleC(); 
+
 					String sB[]=sA[i].split("\n");
 					try {
 						sTime.setHH(Integer.parseInt(sB[1].charAt(0)+""+sB[1].charAt(1)));
@@ -63,6 +64,7 @@
 						tmpSub.setText(text);
 						}		
 						tmpSeq.addSubtitle(tmpSub);
+						tmpSub = null;
 					}
 				s.close();
 					
@@ -73,24 +75,5 @@
 			
 			return tmpSeq;
 		}
-		private static boolean isNotCorrupt(String []aS) {
-			for(int i=0;i<aS.length;i++) {
-				
-				 if(aS[i].matches("^\\d+$")) {
-						continue;
-					}
-					else if(aS[i].matches("^\\d{2}:\\d{2}:\\d{2},\\d{3}.*\\d{2}:\\d{2}:\\d{2},\\d{3}$")) {
-						continue;
-					}
-					else if(aS[i].matches(".+")) {
-						continue;
-					}
-					else if(aS[i].matches("")) {
-						continue;
-					}
-					else 
-						return false;
-				}
-				return true;
-		}
+		
 	}

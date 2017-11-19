@@ -7,31 +7,35 @@ public class SubtitleSeqC implements SubtitleSeq {
 	@Override
 	public void addSubtitle(Subtitle st) {
 		if(ListofSubs.empty())
-		ListofSubs.insert(st);
-		else {
+			ListofSubs.insert(st);
+			else {
+			Subtitle tmpSub;
+			int tmpTime = toMS(st.getStartTime());
+			int curTime;
+
 			ListofSubs.findFirst();
 			while(!ListofSubs.last()) {
-				if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
-					ListofSubs.insert(st);
-					return;
-				}
-				else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
-					Subtitle tmpSub= ListofSubs.retrieve();
+				curTime = toMS(ListofSubs.retrieve().getStartTime());
+				if(tmpTime<curTime) {
+					tmpSub= ListofSubs.retrieve();
 					ListofSubs.update(st);
 					ListofSubs.insert(tmpSub);
 					return;
 				}
 				ListofSubs.findNext();
 			}
-			if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
-				ListofSubs.insert(st);
-			}
-			else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
-				Subtitle tmpSub= ListofSubs.retrieve();
+			curTime = toMS(ListofSubs.retrieve().getStartTime());
+			if(tmpTime<curTime) {
+				tmpSub = ListofSubs.retrieve();
 				ListofSubs.update(st);
 				ListofSubs.insert(tmpSub);
+				return;
 			}
-		}
+
+			ListofSubs.insert(st);
+			ListofSubs.findNext();
+			}
+		
 	}
 
 	@Override
@@ -45,11 +49,13 @@ public class SubtitleSeqC implements SubtitleSeq {
 			return null;
 		ListofSubs.findFirst();
 		while(!ListofSubs.last()){
-			if(toMS(ListofSubs.retrieve().getStartTime()) == toMS(time))
+			if(toMS(ListofSubs.retrieve().getStartTime()) <= toMS(time) &&
+					toMS(ListofSubs.retrieve().getEndTime()) >= toMS(time))
 				return ListofSubs.retrieve();
 			ListofSubs.findNext();
 		}
-		if(toMS(ListofSubs.retrieve().getStartTime()) == toMS(time))
+		if(toMS(ListofSubs.retrieve().getStartTime()) <= toMS(time) &&
+				toMS(ListofSubs.retrieve().getEndTime()) >= toMS(time))
 			return ListofSubs.retrieve();
 		
 		return null;
@@ -76,24 +82,25 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public List<Subtitle> getSubtitles(String str) {
-	    List<Subtitle> tmp = new LinkedList<Subtitle>();
+	    SubtitleSeq tmpSeq = new SubtitleSeqC();
 	    if (ListofSubs.empty()) {
-			return tmp;
+			return null;
 		}
 	    else {
 		    ListofSubs.findFirst();
 
 		    while (!ListofSubs.last()) {
 				if (ListofSubs.retrieve().getText().equalsIgnoreCase(str)) {
-					tmp.insert(ListofSubs.retrieve());
+					tmpSeq.addSubtitle(ListofSubs.retrieve());
 				}
 				ListofSubs.findNext();
 			}
 		    if (ListofSubs.retrieve().getText().equalsIgnoreCase(str)) {
-				tmp.insert(ListofSubs.retrieve());
+				tmpSeq.addSubtitle(ListofSubs.retrieve());
+
 			}
 		}
-	    return tmp;
+	    return tmpSeq.getSubtitles();
 		
 	}
 
@@ -262,39 +269,38 @@ public class SubtitleSeqC implements SubtitleSeq {
 			System.out.println(lis.retrieve().getText());
 			lis.findNext();
 			System.out.println(lis.retrieve().getText());
-			
+			System.out.println(lis.last());
 		}
 }
 
-//d7e9 add
-/*	if(ListofSubs.empty())
+
+
+//our old add
+/*if(ListofSubs.empty())
 ListofSubs.insert(st);
 else {
-Subtitle tmpSub;
-int tmpTime = toMS(st.getStartTime());
-int curTime;
-
-ListofSubs.findFirst();
-while(!ListofSubs.last()) {
-	curTime = toMS(ListofSubs.retrieve().getStartTime());
-	if(tmpTime<curTime) {
-		tmpSub= ListofSubs.retrieve();
+	ListofSubs.findFirst();
+	while(!ListofSubs.last()) {
+		if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
+			ListofSubs.insert(st);
+			return;
+		}
+		else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
+			Subtitle tmpSub= ListofSubs.retrieve();
+			ListofSubs.update(st);
+			ListofSubs.insert(tmpSub);
+			return;
+		}
+		ListofSubs.findNext();
+	}
+	if(toMS(st.getStartTime()) > toMS(ListofSubs.retrieve().getEndTime())) {
+		ListofSubs.insert(st);
+	}
+	else if(toMS(st.getStartTime()) < toMS(ListofSubs.retrieve().getEndTime())) {
+		Subtitle tmpSub= ListofSubs.retrieve();
 		ListofSubs.update(st);
 		ListofSubs.insert(tmpSub);
-		return;
 	}
-	ListofSubs.findNext();
-}
-curTime = toMS(ListofSubs.retrieve().getStartTime());
-if(tmpTime<curTime) {
-	tmpSub = ListofSubs.retrieve();
-	ListofSubs.update(st);
-	ListofSubs.insert(tmpSub);
-	return;
-}
-
-ListofSubs.insert(st);
-ListofSubs.findNext();
 }*/
 
 //pre get by start and end
