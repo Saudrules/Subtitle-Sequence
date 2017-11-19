@@ -111,9 +111,10 @@ public class SubtitleSeqC implements SubtitleSeq {
 			return;
 		listOfSubs.findFirst();
 		while(!listOfSubs.last()) {
-			if(listOfSubs.retrieve().getText().contains(str))
+			if(listOfSubs.retrieve().getText().contains(str)) 
 				listOfSubs.remove();
-			listOfSubs.findNext();
+			else
+				listOfSubs.findNext();
 		}
 		if(listOfSubs.retrieve().getText().contains(str))
 			listOfSubs.remove();
@@ -126,15 +127,17 @@ public class SubtitleSeqC implements SubtitleSeq {
 		listOfSubs.findFirst();
 		while(!listOfSubs.last()) {
 			Subtitle tmp = listOfSubs.retrieve();
-			if(tmp.getText().equalsIgnoreCase(str1))
+			if(tmp.getText().equalsIgnoreCase(str1)) {
 				tmp.setText(str2);
-			listOfSubs.update(tmp);
+			    listOfSubs.update(tmp);
+			}
 			listOfSubs.findNext();
 		}
 		Subtitle tmp = listOfSubs.retrieve();
-		if(tmp.getText().equalsIgnoreCase(str1))
+		if(tmp.getText().equalsIgnoreCase(str1)) {
 			tmp.setText(str2);
-		listOfSubs.update(tmp);
+		    listOfSubs.update(tmp);
+		}
 		
 	}
 	@Override
@@ -152,11 +155,8 @@ public class SubtitleSeqC implements SubtitleSeq {
 			
 				if(msStartTime < 0)
 					msStartTime = 0;
-				if(msEndTime < 0) {
-					listOfSubs.remove();
-					listOfSubs.findNext();
-					continue;
-				}	
+				if(msEndTime < 0) 
+					msEndTime = 0;	
 			
 				Time startTime = toTime(msStartTime);
 				Time endTime = toTime(msEndTime);
@@ -166,8 +166,12 @@ public class SubtitleSeqC implements SubtitleSeq {
 				tmp.setStartTime(startTime);
 				tmp.setEndTime(endTime);
 			
+				
 				listOfSubs.update(tmp);
-				listOfSubs.findNext();
+				if(msEndTime == 0)
+					listOfSubs.remove();
+				else
+					listOfSubs.findNext();
 			}
 			int msStartTime = toMS(listOfSubs.retrieve().getStartTime());
 			int msEndTime = toMS(listOfSubs.retrieve().getEndTime());
@@ -177,11 +181,9 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 			if(msStartTime < 0)
 				msStartTime = 0;
-			if(msEndTime < 0) {
-				listOfSubs.remove();
-				return;
-			}	
-		
+			if(msEndTime < 0) 
+				msEndTime = 0;
+				
 			Time startTime = toTime(msStartTime);
 			Time endTime = toTime(msEndTime);
 		
@@ -189,8 +191,10 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 			tmp.setStartTime(startTime);
 			tmp.setEndTime(endTime);
-		
-			listOfSubs.update(tmp);
+			if(msEndTime == 0)
+				listOfSubs.remove();
+			else	
+				listOfSubs.update(tmp);
 		}
 	}
 
@@ -198,22 +202,21 @@ public class SubtitleSeqC implements SubtitleSeq {
 	public void cut(Time startTime, Time endTime) {
 		if(this.listOfSubs.empty())
 			return;
-		else{
+		else {
 			int offset = (toMS(endTime)-toMS(startTime))*(-1);
 			listOfSubs.findFirst();
 			while(!listOfSubs.last()){
 				while((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
-						(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime()))) {
+						(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime()))) 
 							this.listOfSubs.remove();
-							this.listOfSubs.findNext();
-				}
+				
 				this.listOfSubs.findNext();
 			}
-				if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
-						(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime()))) {
-					this.listOfSubs.remove();
-				}
-		shift(offset);
+			if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
+					(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime()))) 
+				this.listOfSubs.remove();
+				
+			shift(offset);
 		}
 	}
 		
@@ -234,9 +237,17 @@ public class SubtitleSeqC implements SubtitleSeq {
 			return R;
 		}
 		
+		
+		
 		public static void main(String[] args) throws Exception {
 			SubtitleSeq seq = SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
+			Time tmp = new TimeC();
+			Time tmp1 = new TimeC();
+			tmp=toTime(0);
+			tmp1=toTime(600000);
+			seq.cut(tmp, tmp1);
 			List<Subtitle> l = seq.getSubtitles();
+			
 			  l.findFirst();
 			  while(!l.last()) {
 				System.out.println(l.retrieve().getText());
