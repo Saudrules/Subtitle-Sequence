@@ -134,7 +134,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 			listOfSubs.findNext();
 		}
 		Subtitle tmp = listOfSubs.retrieve();
-		if(tmp.getText().equalsIgnoreCase(str1)) {
+		if(tmp.getText().contains(str1)) {
 			tmp.setText(listOfSubs.retrieve().getText().replace(str1, str2));
 		    listOfSubs.update(tmp);
 		}
