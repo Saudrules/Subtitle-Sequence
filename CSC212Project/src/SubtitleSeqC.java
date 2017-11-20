@@ -59,7 +59,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 		return null;
 	}
-	
+	//Doesn't Work
 	@Override
 	public List<Subtitle> getSubtitles(Time startTime, Time endTime) {
 		List<Subtitle> tmpList;
@@ -70,7 +70,8 @@ public class SubtitleSeqC implements SubtitleSeq {
 			if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
 					(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime())))
 				tmpSeq.addSubtitle(listOfSubs.retrieve());
-			listOfSubs.findNext();
+			else
+				listOfSubs.findNext();
 		}
 		if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
 				(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime())))
@@ -126,15 +127,15 @@ public class SubtitleSeqC implements SubtitleSeq {
 		listOfSubs.findFirst();
 		while(!listOfSubs.last()) {
 			Subtitle tmp = listOfSubs.retrieve();
-			if(tmp.getText().equalsIgnoreCase(str1)) {
-				tmp.setText(str2);
+			if(tmp.getText().contains(str1)) {
+				tmp.setText(listOfSubs.retrieve().getText().replace(str1, str2));
 			    listOfSubs.update(tmp);
 			}
 			listOfSubs.findNext();
 		}
 		Subtitle tmp = listOfSubs.retrieve();
 		if(tmp.getText().equalsIgnoreCase(str1)) {
-			tmp.setText(str2);
+			tmp.setText(listOfSubs.retrieve().getText().replace(str1, str2));
 		    listOfSubs.update(tmp);
 		}
 		
@@ -240,10 +241,12 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 		public static void main(String[] args) throws Exception {
 			SubtitleSeq seq = SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
+			
 			List<Subtitle> l = seq.getSubtitles();
-		
+	
+			
 			  l.findFirst();
-			  while(!l.last()) {
+			 while(!l.last()) {
 				System.out.println(l.retrieve().getText());
 				System.out.println();
 				l.findNext();
