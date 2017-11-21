@@ -59,24 +59,24 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 		return null;
 	}
-	//Doesn't Work
+	
 	@Override
 	public List<Subtitle> getSubtitles(Time startTime, Time endTime) {
-		List<Subtitle> tmpList;
-		SubtitleSeq tmpSeq = new SubtitleSeqC();
+		List<Subtitle> tmpList =new LinkedList<Subtitle>();
+		
 		
 		listOfSubs.findFirst();
 		while(!listOfSubs.last()) {
-			if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
-					(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime())))
-				tmpSeq.addSubtitle(listOfSubs.retrieve());
-			else
-				listOfSubs.findNext();
+			if(toMS(listOfSubs.retrieve().getStartTime())>=toMS(startTime)&&
+					(toMS(listOfSubs.retrieve().getEndTime())<=toMS(endTime)))
+				tmpList.insert(listOfSubs.retrieve());
+			
+			listOfSubs.findNext();
 		}
-		if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
-				(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime())))
-			tmpSeq.addSubtitle(listOfSubs.retrieve());
-		tmpList = tmpSeq.getSubtitles();
+		if(toMS(listOfSubs.retrieve().getStartTime())>=toMS(startTime)&&
+				(toMS(listOfSubs.retrieve().getEndTime())<=toMS(endTime)))
+			tmpList.insert(listOfSubs.retrieve());
+		
 		return tmpList;
 	}
 
@@ -197,26 +197,56 @@ public class SubtitleSeqC implements SubtitleSeq {
 				listOfSubs.update(tmp);
 		}
 	}
-
+	
+	
 	@Override
 	public void cut(Time startTime, Time endTime) {
-		if(this.listOfSubs.empty())
+		if(listOfSubs.empty())
 			return;
 		else {
-			int offset = (toMS(endTime)-toMS(startTime))*(-1);
 			listOfSubs.findFirst();
-			while(!listOfSubs.last()){
-				while((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
-						(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime()))) 
-							this.listOfSubs.remove();
+			
+			Subtitle tmp = listOfSubs.retrieve();
+			while (!listOfSubs.last()) {
 				
-				this.listOfSubs.findNext();
+				if (toMS(listOfSubs.retrieve().getStartTime()) <= toMS(startTime) && toMS(listOfSubs.retrieve().getEndTime()) >= toMS(startTime)) { 
+					listOfSubs.remove();
+					continue;
+				} else if (toMS(listOfSubs.retrieve().getStartTime()) >= toMS(startTime) && toMS(listOfSubs.retrieve().getStartTime()) <= toMS(endTime)) {
+					listOfSubs.remove();
+					continue;
+				}
+	
+				if (toMS(listOfSubs.retrieve().getStartTime()) > toMS(endTime) && !tmp.equals(listOfSubs.retrieve())) {
+					int offset = (toMS(endTime)-toMS(startTime));
+	
+					int newStart = toMS(listOfSubs.retrieve().getStartTime())-offset;
+					int newEnd = toMS(listOfSubs.retrieve().getEndTime())-offset;
+					
+	
+					listOfSubs.retrieve().setStartTime(toTime(newStart));
+					listOfSubs.retrieve().setEndTime(toTime(newEnd));
+				}
+	
+				listOfSubs.findNext();
+	
 			}
-			if((toMS(startTime)>=toMS(listOfSubs.retrieve().getStartTime()))&&
-					(toMS(endTime)<=toMS(listOfSubs.retrieve().getEndTime()))) 
-				this.listOfSubs.remove();
+			if (toMS(listOfSubs.retrieve().getStartTime()) <= toMS(startTime) && toMS(listOfSubs.retrieve().getEndTime()) >= toMS(startTime)) 
+				listOfSubs.remove();
+			 else if (toMS(listOfSubs.retrieve().getStartTime()) >= toMS(startTime) && toMS(listOfSubs.retrieve().getStartTime()) <= toMS(endTime)) 
+				listOfSubs.remove();
+			
+	
+			if (toMS(listOfSubs.retrieve().getStartTime()) > toMS(endTime) && !tmp.equals(listOfSubs.retrieve())) {
+				int offset = (toMS(endTime)-toMS(startTime));
+	
+				int newStart = toMS(listOfSubs.retrieve().getStartTime())-offset;
+				int newEnd = toMS(listOfSubs.retrieve().getEndTime())-offset;
 				
-			shift(offset);
+	
+				listOfSubs.retrieve().setStartTime(toTime(newStart));
+				listOfSubs.retrieve().setEndTime(toTime(newEnd));
+			}
 		}
 	}
 		
@@ -236,21 +266,5 @@ public class SubtitleSeqC implements SubtitleSeq {
 			R.setMS(RealTimeMS);
 			return R;
 		}
-		
-		
-		
-		public static void main(String[] args) throws Exception {
-			SubtitleSeq seq = SubtitleSeqFactory.loadSubtitleSeq("winnie-the-pooh-2011.srt");
-			
-			List<Subtitle> l = seq.getSubtitles();
 	
-			
-			  l.findFirst();
-			 while(!l.last()) {
-				System.out.println(l.retrieve().getText());
-				System.out.println();
-				l.findNext();
-			}
-			System.out.println(l.retrieve().getText());
-		}	
 }
