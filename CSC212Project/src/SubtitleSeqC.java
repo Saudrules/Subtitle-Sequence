@@ -1,5 +1,11 @@
 public class SubtitleSeqC implements SubtitleSeq {
 	
+	/*
+	 * We might want to add:
+	 * .toLowerCase() 
+	 * in methods that take a string as param.
+	 */
+	
 	private List<Subtitle> listOfSubs = new LinkedList<Subtitle>() ;
 	
 	
@@ -266,5 +272,5 @@ public class SubtitleSeqC implements SubtitleSeq {
 			R.setMS(RealTimeMS);
 			return R;
 		}
-	
+
 }
