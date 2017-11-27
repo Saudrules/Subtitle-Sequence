@@ -41,13 +41,16 @@
 					}
 				String toStringBuffer = stringBuffer.toString();
 				String subsArray[] = toStringBuffer.split("\n\n");
+				int seq = 0 ;
 				for(int i = 0 ;i<subsArray.length;i++) {
 					Subtitle tmpSub = new SubtitleC(); 
 					TimeC startTime = new TimeC();
 					TimeC endTime = new TimeC();
 					String text = null;
+					
 
 					String linesArray[]=subsArray[i].split("\n");
+					if(seq++ == Integer.parseInt(linesArray[0])) {
 					try {
 						startTime.setHH(Integer.parseInt(linesArray[1].charAt(0)+""+linesArray[1].charAt(1)));
 						startTime.setMM(Integer.parseInt(linesArray[1].charAt(3)+""+linesArray[1].charAt(4)));
@@ -78,6 +81,9 @@
 						}		
 						tmpSeq.addSubtitle(tmpSub);
 						tmpSub = null;
+						}
+					else
+						return null;
 					}
 				buffer.close();
 					

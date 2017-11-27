@@ -73,14 +73,14 @@ public class SubtitleSeqC implements SubtitleSeq {
 		
 		listOfSubs.findFirst();
 		while(!listOfSubs.last()) {
-			if(toMS(listOfSubs.retrieve().getStartTime())>=toMS(startTime)&&
-					(toMS(listOfSubs.retrieve().getEndTime())<=toMS(endTime)))
+			if(toMS(listOfSubs.retrieve().getEndTime())>=toMS(startTime)&&
+					(toMS(listOfSubs.retrieve().getStartTime())<=toMS(endTime)))
 				tmpList.insert(listOfSubs.retrieve());
 			
 			listOfSubs.findNext();
 		}
-		if(toMS(listOfSubs.retrieve().getStartTime())>=toMS(startTime)&&
-				(toMS(listOfSubs.retrieve().getEndTime())<=toMS(endTime)))
+		if(toMS(listOfSubs.retrieve().getEndTime())>=toMS(startTime)&&
+				(toMS(listOfSubs.retrieve().getStartTime())<=toMS(endTime)))
 			tmpList.insert(listOfSubs.retrieve());
 		
 		return tmpList;
