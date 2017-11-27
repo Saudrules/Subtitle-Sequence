@@ -13,7 +13,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 	public void addSubtitle(Subtitle st) {
 		if(listOfSubs.empty())
 			listOfSubs.insert(st);
-			else {
+			else if(!isOverlapping(st)) {
 			Subtitle tmpSub;
 			int tmpTime = toMS(st.getStartTime());
 			int curTime;
@@ -40,7 +40,8 @@ public class SubtitleSeqC implements SubtitleSeq {
 			listOfSubs.insert(st);
 			listOfSubs.findNext();
 			}
-		
+			else 
+				return;
 	}
 
 	@Override
@@ -271,6 +272,20 @@ public class SubtitleSeqC implements SubtitleSeq {
 			R.setSS(RealTimeSS);
 			R.setMS(RealTimeMS);
 			return R;
+		}
+		
+		private boolean isOverlapping(Subtitle st) {
+			listOfSubs.findFirst();
+			while(!listOfSubs.last()) {
+				if(toMS(listOfSubs.retrieve().getEndTime())>=toMS(st.getStartTime())&&
+						(toMS(listOfSubs.retrieve().getStartTime())<=toMS(st.getEndTime())))
+					return true;
+				listOfSubs.findNext();
+			}
+			if(toMS(listOfSubs.retrieve().getEndTime())>=toMS(st.getStartTime())&&
+					(toMS(listOfSubs.retrieve().getStartTime())<=toMS(st.getEndTime())))
+				return true;
+			return false;
 		}
 
 }
