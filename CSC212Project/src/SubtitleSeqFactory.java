@@ -41,7 +41,7 @@
 					}
 				String toStringBuffer = stringBuffer.toString();
 				String subsArray[] = toStringBuffer.split("\n\n");
-				int seq = 0 ;
+				int seq = 1 ;
 				for(int i = 0 ;i<subsArray.length;i++) {
 					Subtitle tmpSub = new SubtitleC(); 
 					TimeC startTime = new TimeC();
@@ -64,6 +64,8 @@
 						catch(NumberFormatException e) {
 							return null;
 						}
+					if(toMS(startTime)>toMS(endTime))
+						return null;
 						tmpSub.setStartTime(startTime);
 						startTime = null;
 						tmpSub.setEndTime(endTime);
@@ -93,6 +95,10 @@
 				}
 			
 			return tmpSeq;
+		}
+		
+		private static int toMS(Time t){
+			return (t.getHH()*3600000 + t.getMM()*60000 + t.getSS()*1000 + t.getMS()) ;
 		}
 		
 	}
