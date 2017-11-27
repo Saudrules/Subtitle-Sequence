@@ -225,7 +225,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 				}
 	
 				if (toMS(listOfSubs.retrieve().getStartTime()) > toMS(endTime) && !tmp.equals(listOfSubs.retrieve())) {
-					int offset = (toMS(endTime)-toMS(startTime));
+					int offset = (toMS(endTime)-toMS(startTime))+1;
 	
 					int newStart = toMS(listOfSubs.retrieve().getStartTime())-offset;
 					int newEnd = toMS(listOfSubs.retrieve().getEndTime())-offset;
@@ -245,7 +245,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 			
 	
 			if (toMS(listOfSubs.retrieve().getStartTime()) > toMS(endTime) && !tmp.equals(listOfSubs.retrieve())) {
-				int offset = (toMS(endTime)-toMS(startTime));
+				int offset = (toMS(endTime)-toMS(startTime))+1;
 	
 				int newStart = toMS(listOfSubs.retrieve().getStartTime())-offset;
 				int newEnd = toMS(listOfSubs.retrieve().getEndTime())-offset;
