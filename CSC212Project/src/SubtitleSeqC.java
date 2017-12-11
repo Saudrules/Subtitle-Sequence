@@ -22,7 +22,7 @@ public class SubtitleSeqC implements SubtitleSeq {
 			while(!listOfSubs.last()) {
 				curTime = toMS(listOfSubs.retrieve().getStartTime());
 				if(tmpTime<curTime) {
-					tmpSub= listOfSubs.retrieve();
+					tmpSub = listOfSubs.retrieve();
 					listOfSubs.update(st);
 					listOfSubs.insert(tmpSub);
 					return;

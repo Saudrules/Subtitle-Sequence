@@ -255,7 +255,7 @@ public class SortedBST<K extends Comparable<K>, T> implements SortedMap<K, T> {
 
 	@Override
 	public List<Pair<K, T>> inRange(K k1, K k2) {
-		LinkedListWC<Pair<K, T>> res = new LinkedListWC<Pair<K, T>>();
+		LinkedList<Pair<K, T>> res = new LinkedList<Pair<K, T>>();
 		if (k1.compareTo(k2) <= 0) {
 			inRange(k1, k2, root, res);
 		}
