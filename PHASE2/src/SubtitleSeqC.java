@@ -108,7 +108,60 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public void shift(int offset) {
-
+		if(this.sortedSubs.empty() )
+			return;
+		else {
+			sortedSubs.findFirst();
+			while(!sortedSubs.last()) {
+				int msStartTime = toMS(sortedSubs.retrieve().second.getStartTime());
+				int msEndTime = toMS(sortedSubs.retrieve().second.getEndTime());
+			
+				msStartTime += offset;
+				msEndTime += offset;
+			
+				if(msStartTime < 0)
+					msStartTime = 0;
+				if(msEndTime < 0) 
+					msEndTime = 0;	
+			
+				Time startTime = toTime(msStartTime);
+				Time endTime = toTime(msEndTime);
+			
+				Subtitle tmp = sortedSubs.retrieve().second;
+			
+				tmp.setStartTime(startTime);
+				tmp.setEndTime(endTime);
+			
+				
+				sortedSubs.update(tmp);
+				if(msEndTime == 0)
+					sortedSubs.remove();
+				else
+					sortedSubs.findNext();
+			}
+			int msStartTime = toMS(sortedSubs.retrieve().second.getStartTime());
+			int msEndTime = toMS(sortedSubs.retrieve().second.getEndTime());
+		
+			msStartTime += offset;
+			msEndTime += offset;
+		
+			if(msStartTime < 0)
+				msStartTime = 0;
+			if(msEndTime < 0) 
+				msEndTime = 0;
+				
+			Time startTime = toTime(msStartTime);
+			Time endTime = toTime(msEndTime);
+		
+			Subtitle tmp = sortedSubs.retrieve().second;
+		
+			tmp.setStartTime(startTime);
+			tmp.setEndTime(endTime);
+			if(msEndTime == 0)
+				sortedSubs.remove();
+			else	
+				sortedSubs.update(tmp);
+		}
 	}
 
 	private static int toMS(Time t) {
@@ -147,36 +200,36 @@ public class SubtitleSeqC implements SubtitleSeq {
 		return false;
 	}
 
-	private void addSubtitle(Subtitle st, List<Subtitle> listOfSubs) {
+	private void addSubtitle(Subtitle st, List<Subtitle> tmp) {
 
-		if (listOfSubs.empty())
-			listOfSubs.insert(st);
+		if (tmp.empty())
+			tmp.insert(st);
 		else if (!isOverlapping(st)) {
 			Subtitle tmpSub;
 			int tmpTime = toMS(st.getStartTime());
 			int curTime;
 
-			listOfSubs.findFirst();
-			while (!listOfSubs.last()) {
-				curTime = toMS(listOfSubs.retrieve().getStartTime());
+			tmp.findFirst();
+			while (!tmp.last()) {
+				curTime = toMS(tmp.retrieve().getStartTime());
 				if (tmpTime < curTime) {
-					tmpSub = listOfSubs.retrieve();
-					listOfSubs.update(st);
-					listOfSubs.insert(tmpSub);
+					tmpSub = tmp.retrieve();
+					tmp.update(st);
+					tmp.insert(tmpSub);
 					return;
 				}
-				listOfSubs.findNext();
+				tmp.findNext();
 			}
-			curTime = toMS(listOfSubs.retrieve().getStartTime());
+			curTime = toMS(tmp.retrieve().getStartTime());
 			if (tmpTime < curTime) {
-				tmpSub = listOfSubs.retrieve();
-				listOfSubs.update(st);
-				listOfSubs.insert(tmpSub);
+				tmpSub = tmp.retrieve();
+				tmp.update(st);
+				tmp.insert(tmpSub);
 				return;
 			}
 
-			listOfSubs.insert(st);
-			listOfSubs.findNext();
+			tmp.insert(st);
+			tmp.findNext();
 		} else
 			return;
 	}
