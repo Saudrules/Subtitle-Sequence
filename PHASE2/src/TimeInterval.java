@@ -8,6 +8,7 @@ public class TimeInterval implements Comparable<TimeInterval> {
 		endTime = s.getEndTime();
 	}
 	
+	//Use implementation of Comparable<Time> in the Time interface if this doesn't work
 	@Override
 	public int compareTo(TimeInterval that) {
 		if(toMS(startTime) > toMS(that.endTime))
