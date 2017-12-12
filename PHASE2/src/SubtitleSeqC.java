@@ -43,7 +43,16 @@ public class SubtitleSeqC implements SubtitleSeq {
 
 	@Override
 	public List<Subtitle> getSubtitles(){
+		List<Subtitle> tmp = new LinkedList<Subtitle>();
 		
+		sortedSubs.findFirst();
+		while(!sortedSubs.last()) {
+			addSubtitle(sortedSubs.retrieve().second, tmp);
+			sortedSubs.findNext();
+		}
+		addSubtitle(sortedSubs.retrieve().second, tmp);
+		
+		return tmp;
 	}
 	
 	@Override
@@ -127,7 +136,41 @@ public class SubtitleSeqC implements SubtitleSeq {
 				return true;
 			return false;
 		}
+		
+		private void addSubtitle(Subtitle st, List<Subtitle> listOfSubs) {
+			
+			if(listOfSubs.empty())
+				listOfSubs.insert(st);
+				else if(!isOverlapping(st)) {
+				Subtitle tmpSub;
+				int tmpTime = toMS(st.getStartTime());
+				int curTime;
 
+				listOfSubs.findFirst();
+				while(!listOfSubs.last()) {
+					curTime = toMS(listOfSubs.retrieve().getStartTime());
+					if(tmpTime<curTime) {
+						tmpSub = listOfSubs.retrieve();
+						listOfSubs.update(st);
+						listOfSubs.insert(tmpSub);
+						return;
+					}
+					listOfSubs.findNext();
+				}
+				curTime = toMS(listOfSubs.retrieve().getStartTime());
+				if(tmpTime<curTime) {
+					tmpSub = listOfSubs.retrieve();
+					listOfSubs.update(st);
+					listOfSubs.insert(tmpSub);
+					return;
+				}
+
+				listOfSubs.insert(st);
+				listOfSubs.findNext();
+				}
+				else 
+					return;
+		}
 		
 
 }
