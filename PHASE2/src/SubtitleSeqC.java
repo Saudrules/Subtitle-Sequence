@@ -1,7 +1,7 @@
 public class SubtitleSeqC implements SubtitleSeq {
 
 	private SortedMap<TimeInterval, Subtitle> sortedSubs = new SortedBST<TimeInterval, Subtitle>();
-
+	
 	@Override
 	public void addSubtitle(Subtitle st) {
 		if (sortedSubs.empty())
@@ -38,7 +38,6 @@ public class SubtitleSeqC implements SubtitleSeq {
 		else
 			return;
 	}
-
 	@Override
 	public List<Subtitle> getSubtitles() {
 		List<Subtitle> tmp = new LinkedList<Subtitle>();
