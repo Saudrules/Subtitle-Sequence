@@ -27,4 +27,6 @@ public interface SubtitleSeq {
 	// Negative time is not allowed and must be replaced with 0. If the end time
 	// becomes 0, the subtitle must be removed.
 	void shift(int offset);
+
+	
 }

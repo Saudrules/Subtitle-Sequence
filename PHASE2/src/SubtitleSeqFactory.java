@@ -50,7 +50,9 @@
 					
 
 					String linesArray[]=subsArray[i].split("\n");
+					//linesArray[0].contains(Integer.toString(seq))
 					if(seq++ == Integer.parseInt(linesArray[0])) {
+						seq++;
 					try {
 						startTime.setHH(Integer.parseInt(linesArray[1].charAt(0)+""+linesArray[1].charAt(1)));
 						startTime.setMM(Integer.parseInt(linesArray[1].charAt(3)+""+linesArray[1].charAt(4)));
