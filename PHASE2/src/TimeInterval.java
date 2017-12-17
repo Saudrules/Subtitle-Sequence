@@ -1,20 +1,22 @@
 public class TimeInterval implements Comparable<TimeInterval> {
 	
-	private Time startTime;
-	private Time endTime;
-	
-	public TimeInterval(Subtitle s) {
-		startTime = s.getStartTime();
-		endTime = s.getEndTime();
+	private Integer startTime;
+	private Integer endTime;
+		public TimeInterval(Time start, Time end) {
+		startTime = new Integer(toMS(start));
+		endTime = new Integer(toMS(end));
 	}
+	
+	
 	
 	//Use implementation of Comparable<Time> in the Time interface if this doesn't work
 	@Override
 	public int compareTo(TimeInterval that) {
-		if(toMS(startTime) > toMS(that.endTime))
+		if(startTime.compareTo(that.endTime) > 0)
 			return 1;
-		if(toMS(endTime) < toMS(that.startTime))
+		if(endTime.compareTo(that.startTime) < 0)
 			return -1;
+		
 		return 0;
 	}
 	
